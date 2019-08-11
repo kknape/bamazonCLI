@@ -2,6 +2,8 @@
 
 var mysql = require("mysql");
 var inquirer = require("inquirer");
+// var table = require("cli-table2");
+
 
 // create the connection information for the sql database
 var connection = mysql.createConnection({
@@ -16,57 +18,81 @@ var connection = mysql.createConnection({
 connection.connect(function(err) {
   if (err) throw err;
   console.log("connected as id " + connection.threadId);
-});
+})
 
 
 function displayProducts() {
     connection.query("SELECT * FROM products", function(err,results){
         console.log(results);
         if (err) throw err;
-//function makeOrder() {
+         });
+        }
+function makeOrder() {
         // query the database for all items available to buy
- //       connection.query("SELECT * FROM products", function(err, results) {
-     //       if (err) throw err;
+        connection.query("SELECT * FROM products", function(err, results) {
+          console.log(results);
+          // if (err) throw err;
             // once you have the items, prompt the user for what they'd like to purchase
-            inquirer.prompt([
+            inquirer.prompt(
                     {
-                    name: "choice",
+                    name: "productChoice",
                     type: "rawlist",
-                    choices: function() {
+                    choices: function(value) {
                         var choiceArray = [];
-                        for (var i = 0; i < results.length; i++) {
-                        choiceArray.push(results[i].item_id);
+
+                        for (var i=0; i < results.length; i++) {
+                        choiceArray.push(results[i].product_name);
                         }
                         return choiceArray;
                             },
                     message: "What would you like to purchase?",
-                    }
-                  /*  {
-                    name: "qty",
-                    type: "rawlist",
-                    message: "How many would you like to purchase?",
-                    choices: function() {
-                        var choiceQty = [];
-                        for (var i = 0; i < results.length; i++) {
-                        choiceQty.push(results[i].stock_qty);
-                        }
-                        return choiceQty;
-                            },
-                    }*/
-                    ])
+                    })
+
             .then(function(answer) {
-                console.log(choiceArray)
-                // get the information of the chosen item
-              //  var chosenItem;
-             //   for (var i = 0; i < results.length; i++) {
-              //  if (results[i].item_name === answer.choice) {
-             //       chosenItem = results[i];
-             //                   }
-             //               }
-                        });
-                  });
-                }
-       
+            //    var prodChoice = (answer);
+              for (var i=0; i<results.length; i++){
+                if (results[i].product_name==answer.productChoice){
+                  var chosenItem = results[i];
+                    inquirer.prompt({
+                      name: "qty",
+                      type: "input",
+                      message: "How many would you like to purchase?",
+                  //checks to see if it's a number
+                      validate: function(value){
+                            if(isNaN(value)==false){
+                              return true;
+                            }
+                            else {
+                              return false;
+                              }
+                            }
+                      })
+                    .then(function(answer){
+                      console.log(chosenItem);
+                      console.log(chosenItem.stock_qty);
+                      console.log(answer.qty);
+                      var qtyReq = parseInt(answer.qty);
+                    //  console.log(chosenItem.stock_qty-qtyReq);
+                        if(chosenItem.stock_qty > qtyReq){
+                          var stockAdj = chosenItem.stock_qty-qtyReq;
+                          console.log(stockAdj);
+                         connection.query("UPDATE products SET ? WHERE ?",[{
+                            stock_qty: stockAdj
+                            },
+                          {
+                            item_id: chosenItem.item_id
+                              }]
+                            ) 
+                          }            
+                          connection.query("SELECT * FROM products", function(err, results) {
+                            console.log(results);
+                      })
+                          })
+                        }
+                  }
+                })
+              })
+            }
 displayProducts();
-//makeOrder();
+makeOrder();
 
