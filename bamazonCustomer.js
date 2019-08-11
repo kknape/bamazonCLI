@@ -20,13 +20,15 @@ connection.connect(function(err) {
   console.log("connected as id " + connection.threadId);
 })
 
-
+//Shows list of available product details
 function displayProducts() {
     connection.query("SELECT * FROM products", function(err,results){
         console.log(results);
         if (err) throw err;
          });
         }
+
+//Takes customer input for item to purchase. Takes customer input for quantity of the item to purchase. Checks to see if there's enough inventory.        
 function makeOrder() {
         // query the database for all items available to buy
         connection.query("SELECT * FROM products", function(err, results) {
@@ -67,8 +69,7 @@ function makeOrder() {
                               }
                             }
                       })
-                    .then(function(answer){
-                      console.log(chosenItem);
+                    .then(function(answer){                     
                       console.log(chosenItem.stock_qty);
                       console.log(answer.qty);
                       var qtyReq = parseInt(answer.qty);
@@ -82,17 +83,20 @@ function makeOrder() {
                           {
                             item_id: chosenItem.item_id
                               }]
-                            ) 
-                          }            
-                          connection.query("SELECT * FROM products", function(err, results) {
-                            console.log(results);
-                      })
+                            )
+                        console.log("Your Order\n" + chosenItem.product_name + "\nQty: " + qtyReq + " Total Cost: $" + (qtyReq*chosenItem.price));
+ 
+                          }  
+                            else {
+                              console.log("Insufficient inventory! There are only" +chosenItem.stock_qty+ " left in stock.")
+                            }
                           })
                         }
                   }
                 })
               })
             }
+
 displayProducts();
 makeOrder();
-
+//orderConfirm();
