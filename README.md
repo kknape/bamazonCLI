@@ -19,13 +19,13 @@ The App uses a few different npm packages to process the user iputs
 The app uses mySQL database to store product data.
  
 ## How to Use the App
-     1 - Product table is displayed
-       - ![User Selects Prompt](https://kknape.github.io/bamazonCLI/images/bamazon_1.png)
-     2 - User selects item to purchase
-     3 - User selects quantity of item to purchase
-       - ![User Selects Prompt](https://kknape.github.io/bamazonCLI/images/bamazon_2.png)
-     4 - App checks to see if there's enough inventory
-     5 - If there's not enough inventory to fill the order, message to customer displays how much inventory is available.
-       - ![User Selects Prompt](https://kknape.github.io/bamazonCLI/images/bamazon_3.png)
-     6 - If there is enough inventory, message to the customer the order details - Product Name, Quantity, Total Price
-       - ![User Selects Prompt](https://kknape.github.io/bamazonCLI/images/bamazon_4.png)     
+1 - Product table is displayed
+  - ![User Selects Prompt](https://kknape.github.io/bamazonCLI/images/bamazon_1.png)
+2 - User selects item to purchase
+3 - User selects quantity of item to purchase
+  - ![User Selects Prompt](https://kknape.github.io/bamazonCLI/images/bamazon_2.png)
+4 - App checks to see if there's enough inventory
+5 - If there's not enough inventory to fill the order, message to customer displays how much inventory is available.
+  - ![User Selects Prompt](https://kknape.github.io/bamazonCLI/images/bamazon_3.png)
+6 - If there is enough inventory, message to the customer the order details - Product Name, Quantity, Total Price
+  - ![User Selects Prompt](https://kknape.github.io/bamazonCLI/images/bamazon_4.png)     
