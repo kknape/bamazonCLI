@@ -100,7 +100,7 @@ function makeOrder() {
                    //   console.log(answer.qty);
                       var qtyReq = parseInt(answer.qty);
                     //  console.log(chosenItem.stock_qty-qtyReq);
-                        if(chosenItem.stock_qty > qtyReq){
+                        if(chosenItem.stock_qty >= qtyReq){
                           var stockAdj = chosenItem.stock_qty-qtyReq;
                     //      console.log(stockAdj);
                          connection.query("UPDATE products SET ? WHERE ?",[{
@@ -110,11 +110,14 @@ function makeOrder() {
                             item_id: chosenItem.item_id
                               }]
                             )
-                        console.log("Thank you for your order!\n" + chosenItem.product_name + "\nQty: " + qtyReq + "\nTotal Cost: $" + (qtyReq*chosenItem.price));
- 
+                        console.log("Thank you for your order!\n" + chosenItem.product_name + "\nQty: " + qtyReq + "\nTotal Cost: $" + (qtyReq*chosenItem.price) + "\n\n");
+                        displayProducts();
+                        makeOrder();   
                           }  
                             else {
-                              console.log("Insufficient inventory! There are only" +chosenItem.stock_qty+ " left in stock.")
+                              console.log("Insufficient inventory! There are " +chosenItem.stock_qty+ " left in stock.")                           
+                              displayProducts();
+                              makeOrder();
                             }
                           })
                         }
